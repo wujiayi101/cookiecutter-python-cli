@@ -3,7 +3,7 @@
 {{ cookiecutter.app_name }}
 {{ delim }}
 
-This is the {{ cookiecutter.app_name }} application.
+This is the {{ cookiecutter.app_name }} CLI application.
 
 
 Minimum Requirements
@@ -25,24 +25,36 @@ Optional Requirements
 Basic Setup
 ===========
 
-Install for the current user:
+Install `pre-commit` for linting
 
 .. code-block:: console
 
-    $ python -m pip install . --user
+    $ pip3 install pre-commit
+
+Install `pre-commit` hooks
+
+.. code-block:: console
+
+    $ pre-commit install
+
+Install this app for the current user:
+
+.. code-block:: console
+
+    $ pip3 install . --user
 
 
 Run the application:
 
 .. code-block:: console
 
-    $ python -m {{ cookiecutter.app_name }} --help
+    $ {{ cookiecutter.app_name }} --help
 
 
 Run the test suite:
 
 .. code-block:: console
-   
+
     $ pytest test/
 
 
