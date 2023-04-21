@@ -1,0 +1,45 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+        - "3.8"
+        - "3.9"
+        - "3.10"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python {% raw %}${{ matrix.python-version }}{% endraw %}}
+        uses: actions/setup-python@v4
+        with:
+          python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
+          cache: pip
+      - name: Lint
+        run: |
+          sudo pip3 install pre-commit
+          pre-commit install
+          pre-commit run -a
+      - name: Package
+        run: |
+          sudo pip3 install -r requirements.txt
+          sudo pip3 install . --user
+      - name: Pytest
+        run: |
+          sudo pip3 install -r test/requirements.txt
+          sudo pytest test/
+      - name: Create Doc
+        run: |
+          sudo pip3 install -r doc/requirements.txt
+          sudo sphinx-build -b html doc doc/_build/html
